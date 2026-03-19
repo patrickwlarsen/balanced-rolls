@@ -1,0 +1,182 @@
+[
+  {
+    "name": "Dontlos",
+    "raidHelperName": "Dontlos/priest",
+    "rollModifier": "1",
+    "eventName": "Dontlos/priest"
+  },
+  {
+    "name": "Babyhiggy",
+    "raidHelperName": "BabyHiggy",
+    "rollModifier": "1",
+    "eventName": "BabyHiggy"
+  },
+  {
+    "name": "Kebabister",
+    "raidHelperName": "Kebabister",
+    "rollModifier": "1",
+    "eventName": "Kebabister"
+  },
+  {
+    "name": "Ruínz",
+    "raidHelperName": "Ruínz",
+    "rollModifier": "1",
+    "eventName": "Ruínz"
+  },
+  {
+    "name": "Jaskan",
+    "raidHelperName": "Jaskan/Billik",
+    "rollModifier": "1",
+    "eventName": "Jaskan/Billik"
+  },
+  {
+    "name": "Zorex",
+    "raidHelperName": "Zorex",
+    "rollModifier": "1",
+    "eventName": "Zorex"
+  },
+  {
+    "name": "Nubareste",
+    "raidHelperName": "Nubareste",
+    "rollModifier": "1",
+    "eventName": "Nubareste"
+  },
+  {
+    "name": "Frabby",
+    "raidHelperName": "Frabby",
+    "rollModifier": "1",
+    "eventName": "Frabby"
+  },
+  {
+    "name": "Mystibloom",
+    "raidHelperName": "Mystibloom",
+    "rollModifier": "1",
+    "eventName": "Mystibloom"
+  },
+  {
+    "name": "Ingredi",
+    "raidHelperName": "Ingreda",
+    "rollModifier": "1",
+    "eventName": "Ingreda"
+  },
+  {
+    "name": "Mehndi",
+    "raidHelperName": "Debrek",
+    "rollModifier": "0.9",
+    "eventName": "Debrek"
+  },
+  {
+    "name": "Richforever",
+    "raidHelperName": "Richforever",
+    "rollModifier": "1",
+    "eventName": "Richforever"
+  },
+  {
+    "name": "Blomsterbarn",
+    "raidHelperName": "Blomsterbarn",
+    "rollModifier": "1",
+    "eventName": "Blomsterbarn"
+  },
+  {
+    "name": "Outofshards",
+    "raidHelperName": "Outofshards",
+    "rollModifier": "1",
+    "eventName": "Outofshards"
+  },
+  {
+    "name": "Kymoz",
+    "raidHelperName": "Kymoz",
+    "rollModifier": "1",
+    "eventName": "Kymoz"
+  },
+  {
+    "name": "Fireblaster",
+    "raidHelperName": "Fireblaster",
+    "rollModifier": "1",
+    "eventName": "Fireblaster"
+  },
+  {
+    "name": "Lockblocks",
+    "raidHelperName": "Lockblocks",
+    "rollModifier": "1",
+    "eventName": "Lockblocks"
+  },
+  {
+    "name": "Fenetic",
+    "raidHelperName": "Fenetic",
+    "rollModifier": "1",
+    "eventName": "Fenetic"
+  },
+  {
+    "name": "Hypnoticrage",
+    "raidHelperName": "Hypnoticrage",
+    "rollModifier": "1",
+    "eventName": "Hypnoticrage"
+  },
+  {
+    "name": "Fitzchiv",
+    "raidHelperName": "Fitzchiv",
+    "rollModifier": "1",
+    "eventName": "Fitzchiv"
+  },
+  {
+    "name": "Easyplay",
+    "raidHelperName": "easYplaY",
+    "rollModifier": "1",
+    "eventName": "easYplaY"
+  },
+  {
+    "name": "Lewdgnome",
+    "raidHelperName": "Lewd_Goblin",
+    "rollModifier": "1",
+    "eventName": "Lewd_Goblin"
+  },
+  {
+    "name": "Starscreäm",
+    "raidHelperName": "Starscreäm",
+    "rollModifier": "1",
+    "eventName": "Starscreäm"
+  },
+  {
+    "name": "Aaggiinn",
+    "raidHelperName": "Aaggiinn",
+    "rollModifier": "1",
+    "eventName": "Aaggiinn"
+  },
+  {
+    "name": "Dzieniu",
+    "raidHelperName": "dzieniu",
+    "rollModifier": "1",
+    "eventName": "dzieniu"
+  },
+  {
+    "name": "Arioso",
+    "raidHelperName": "Arioso",
+    "rollModifier": "1",
+    "eventName": "Arioso"
+  },
+  {
+    "name": "Eltho",
+    "raidHelperName": "Eltho/Aemelius",
+    "rollModifier": "1",
+    "eventName": "Eltho/Aemelius"
+  },
+  {
+    "name": "Murkaris",
+    "raidHelperName": "Murkar",
+    "rollModifier": "1",
+    "eventName": "Murkar"
+  },
+  {
+    "name": "Pizzaboi",
+    "raidHelperName": "Thorgils/Pizza",
+    "rollModifier": "1",
+    "eventName": "Thorgils/Pizza"
+  },
+  {
+    "name": "Hurmos",
+    "raidHelperName": "Hurmos",
+    "rollModifier": "1",
+    "eventName": "Hurmos"
+  }
+]

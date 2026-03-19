@@ -1,0 +1,33 @@
+I want to create an addon for world of warcraft tbc anniversary.
+
+It should be called "Balanced Rolls" and will be a way of ensuring people with good attendance in raids get rewarded fairly.
+I already have an application that tracks the awards players get and a way to deduct points when they win items.
+
+In this project I want to create "Balanced Rolls" as a Gargul plugin.
+Let's create a folder for the addon called "Gargul_BalancedRolls"
+
+I want the addon to have a minimap icon.
+Clicking this should show a UI where it's possible to "Import Balanced Rolls data".
+An example of this data is shown in samples/sample1.txt
+
+When data is imported, I want us to persist it in the saved variables.
+If any previous saved variables exist, let's first delete that before saving the newly imported data.
+Upon completion of the import, let's inform the user with a pop-up and then close the UI.
+
+When the user is in a raid group and is the master looter, he will be able to roll out items.
+Gargul handles this by opening a sort of loot distribution window, where the master looter can start rolls for an item and it automatically picks up which players rolled for which items.
+I want our addon to listen for this and show a separate window, where the we show the players roll multiplied by their rollModifier from the data that was imported.
+
+We should be able to see the player's characters names in the Gargul data on rolls.
+Compare this to the "name" in the data that was imported.
+The rollModifier is also available in the data imported in the field "rollModifier".
+
+In our UI I want us to see something like:
+
+--------------------------------
+| Balanced Rolls               |
+--------------------------------
+| Mehndi - 52 * 0.9     | 46,8 |
+| Nerfdruids - 70 * 1.2 |   84 |
+| Fitzchiv - 100 * 1    |  100 |
+--------------------------------
