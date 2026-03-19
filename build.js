@@ -14,7 +14,7 @@ function log(...messages) {
 
 const scriptDir = __dirname;
 const packagePath = path.join(scriptDir, 'package.json');
-const sourcePath = path.join(scriptDir, 'PrimalLedger');
+const sourcePath = path.join(scriptDir, 'Gargul_BalancedRolls');
 const releasesDir = path.join(scriptDir, 'releases');
 const archiveDir = path.join(scriptDir, 'archive');
 
@@ -34,7 +34,7 @@ if (!version) {
 
 // Verify source exists
 if (!fs.existsSync(sourcePath)) {
-    console.error('PrimalLedger folder not found');
+    console.error('Gargul_BalancedRolls folder not found');
     process.exit(1);
 }
 
@@ -58,7 +58,7 @@ for (const file of existingReleases) {
     log('Archived', file);
 }
 
-const zipName = `PrimalLedger-v${version}.zip`;
+const zipName = `Gargul_BalancedRolls-v${version}.zip`;
 const zipPath = path.join(releasesDir, zipName);
 
 // Create zip using PowerShell (Windows) or zip command (Unix)
@@ -68,7 +68,7 @@ if (process.platform === 'win32') {
     const psCommand = `Compress-Archive -Path "${sourcePath}" -DestinationPath "${zipPath}"`;
     execSync(`powershell -Command "${psCommand}"`, { stdio: 'inherit' });
 } else {
-    execSync(`zip -r "${zipPath}" PrimalLedger`, { cwd: scriptDir, stdio: 'inherit' });
+    execSync(`zip -r "${zipPath}" Gargul_BalancedRolls`, { cwd: scriptDir, stdio: 'inherit' });
 }
 
 log('Build complete:', zipPath);
