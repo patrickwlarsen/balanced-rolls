@@ -1,6 +1,6 @@
 {
   "name": "balanced-rolls",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A World of Warcraft addon that tracks attendance in raids and balances rolls.",
   "main": "index.js",
   "scripts": {

@@ -2,7 +2,7 @@
 ## Title: Gargul - Balanced Rolls
 ## Notes: Adjusts roll results based on attendance-weighted modifiers. A Gargul plugin.
 ## Author: patrickwlarsen
-## Version: 1.0.0
+## Version: 1.1.0
 ## Dependencies: Gargul
 ## SavedVariables: BalancedRollsDB
 

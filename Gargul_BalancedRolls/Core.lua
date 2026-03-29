@@ -1,7 +1,7 @@
 local BR = {}
 _G.BalancedRolls = BR
 
-BR.version = "1.0.0"
+BR.version = "1.1.0"
 BR.PlayerData = {}      -- imported data keyed by lowercase name
 BR.EventFrame = CreateFrame("Frame")
 

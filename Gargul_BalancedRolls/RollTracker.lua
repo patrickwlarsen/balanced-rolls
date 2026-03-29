@@ -4,14 +4,16 @@ local GL -- set after Gargul loads
 BR.RollEntries = {}
 BR.rollRows = {}
 BR.rollActive = false
+BR.announcedRolls = {} -- track announced rolls to avoid duplicates
 
 ---------------------------------------------------------------------------
--- Constants (matching GGD style)
+-- Constants
 ---------------------------------------------------------------------------
 local ROW_HEIGHT = 22
 local MAX_VISIBLE_ROWS = 8
-local FRAME_WIDTH = 300
+local FRAME_WIDTH = 350
 local NAME_WIDTH = 100
+local TYPE_WIDTH = 40
 local CALC_WIDTH = 110
 
 ---------------------------------------------------------------------------
@@ -29,6 +31,7 @@ function BR:InitRollTracker()
 
     GL.Events:register("BalancedRolls_RollStarted", "GL.ROLLOFF_STARTED", function()
         BR.RollEntries = {}
+        BR.announcedRolls = {}
         BR.rollActive = true
         -- Defer anchoring so GargulGearDisplay has time to show and size itself
         C_Timer.After(0, function()
@@ -75,10 +78,32 @@ function BR:ProcessRolls()
             rawRoll = roll.amount,
             modifier = modifier,
             adjustedRoll = adjustedRoll,
+            classification = roll.classification or "",
+            priority = roll.priority or 99,
         })
+
+        -- Announce new rolls to raid chat
+        local rollKey = name .. ":" .. roll.amount .. ":" .. (roll.classification or "")
+        if not self.announcedRolls[rollKey] then
+            self.announcedRolls[rollKey] = true
+            local resultStr
+            if adjustedRoll == math.floor(adjustedRoll) then
+                resultStr = tostring(math.floor(adjustedRoll))
+            else
+                resultStr = string.format("%.1f", adjustedRoll)
+            end
+            local msg = name .. " rolled " .. roll.amount .. " with modifier " .. tostring(modifier) .. " resulting in: " .. resultStr
+            local channel = IsInRaid() and "RAID" or IsInGroup() and "PARTY" or nil
+            if channel then
+                SendChatMessage(msg, channel)
+            end
+        end
     end
 
     table.sort(self.RollEntries, function(a, b)
+        if a.priority ~= b.priority then
+            return a.priority < b.priority
+        end
         return a.adjustedRoll > b.adjustedRoll
     end)
 
@@ -86,30 +111,22 @@ function BR:ProcessRolls()
 end
 
 ---------------------------------------------------------------------------
--- Display UI (GGD-matching style)
+-- Display UI (Gargul dark dialog style)
 ---------------------------------------------------------------------------
 function BR:CreateRollDisplay()
     local f = CreateFrame("Frame", "BalancedRollsRollFrame", UIParent, "BackdropTemplate")
     f:SetSize(FRAME_WIDTH, 40)
-    f:SetBackdrop({
-        bgFile = "Interface/Tooltips/UI-Tooltip-Background",
-        edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-        tile = true,
-        tileSize = 16,
-        edgeSize = 16,
-        insets = { left = 4, right = 4, top = 4, bottom = 4 },
-    })
-    f:SetBackdropColor(0.1, 0.1, 0.1, 0.9)
-    f:SetBackdropBorderColor(0.4, 0.4, 0.4, 1)
+    f:SetBackdrop(_G.BACKDROP_DARK_DIALOG_32_32)
     f:SetMovable(true)
     f:EnableMouse(true)
     f:SetClampedToScreen(true)
+    f:SetToplevel(true)
     f:Hide()
 
-    -- Close button
+    -- Close button (Gargul style)
     local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
-    closeBtn:SetSize(20, 20)
-    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -2, -2)
+    closeBtn:SetSize(30, 30)
+    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", 8, 5)
     closeBtn:SetScript("OnClick", function()
         f:Hide()
         BR.rollActive = false
@@ -118,31 +135,37 @@ function BR:CreateRollDisplay()
     -- Title bar for dragging
     local titleBar = CreateFrame("Frame", nil, f)
     titleBar:SetHeight(20)
-    titleBar:SetPoint("TOPLEFT", f, "TOPLEFT", 4, -4)
+    titleBar:SetPoint("TOPLEFT", f, "TOPLEFT", 8, -8)
     titleBar:SetPoint("TOPRIGHT", closeBtn, "TOPLEFT", -2, 0)
     titleBar:EnableMouse(true)
     titleBar:RegisterForDrag("LeftButton")
     titleBar:SetScript("OnDragStart", function() f:StartMoving() end)
     titleBar:SetScript("OnDragStop", function() f:StopMovingOrSizing() end)
 
+    -- Title text (Gargul gold)
     local titleText = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     titleText:SetPoint("LEFT", titleBar, "LEFT", 2, 0)
     titleText:SetText("Balanced Rolls")
-    titleText:SetTextColor(1, 0.82, 0, 1)
+    titleText:SetTextColor(1, 0.84, 0, 1)
 
     -- Column headers
     local headerRow = CreateFrame("Frame", nil, f)
     headerRow:SetHeight(16)
-    headerRow:SetPoint("TOPLEFT", f, "TOPLEFT", 8, -24)
-    headerRow:SetPoint("TOPRIGHT", f, "TOPRIGHT", -28, -24)
+    headerRow:SetPoint("TOPLEFT", f, "TOPLEFT", 12, -28)
+    headerRow:SetPoint("TOPRIGHT", f, "TOPRIGHT", -32, -28)
 
     local nameHeader = headerRow:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     nameHeader:SetPoint("LEFT", headerRow, "LEFT", 2, 0)
     nameHeader:SetText("Player")
     nameHeader:SetTextColor(0.6, 0.6, 0.6)
 
+    local typeHeader = headerRow:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    typeHeader:SetPoint("LEFT", headerRow, "LEFT", NAME_WIDTH, 0)
+    typeHeader:SetText("Type")
+    typeHeader:SetTextColor(0.6, 0.6, 0.6)
+
     local calcHeader = headerRow:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    calcHeader:SetPoint("LEFT", headerRow, "LEFT", NAME_WIDTH, 0)
+    calcHeader:SetPoint("LEFT", headerRow, "LEFT", NAME_WIDTH + TYPE_WIDTH, 0)
     calcHeader:SetText("Roll * Mod")
     calcHeader:SetTextColor(0.6, 0.6, 0.6)
 
@@ -160,11 +183,11 @@ function BR:CreateRollDisplay()
 
     -- Scroll frame for rows
     local scrollFrame = CreateFrame("ScrollFrame", nil, f, "UIPanelScrollFrameTemplate")
-    scrollFrame:SetPoint("TOPLEFT", f, "TOPLEFT", 8, -42)
-    scrollFrame:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -28, 8)
+    scrollFrame:SetPoint("TOPLEFT", f, "TOPLEFT", 12, -46)
+    scrollFrame:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -32, 12)
 
     local content = CreateFrame("Frame", nil, scrollFrame)
-    content:SetSize(FRAME_WIDTH - 36, 1)
+    content:SetSize(FRAME_WIDTH - 44, 1)
     scrollFrame:SetScrollChild(content)
 
     self.rollFrame = f
@@ -263,9 +286,17 @@ function BR:GetOrCreateRollRow(index)
     nameText:SetWordWrap(false)
     row.nameText = nameText
 
+    -- Roll type (MS/OS)
+    local typeText = row:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    typeText:SetPoint("LEFT", row, "LEFT", NAME_WIDTH, 0)
+    typeText:SetWidth(TYPE_WIDTH - 4)
+    typeText:SetJustifyH("LEFT")
+    typeText:SetWordWrap(false)
+    row.typeText = typeText
+
     -- Calculation text (e.g. "52 * 0.9")
     local calcText = row:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    calcText:SetPoint("LEFT", row, "LEFT", NAME_WIDTH, 0)
+    calcText:SetPoint("LEFT", row, "LEFT", NAME_WIDTH + TYPE_WIDTH, 0)
     calcText:SetWidth(CALC_WIDTH)
     calcText:SetJustifyH("LEFT")
     calcText:SetWordWrap(false)
@@ -298,11 +329,15 @@ function BR:RefreshRollDisplay()
     self.rollContent:SetHeight(contentHeight)
 
     local visibleRows = math.min(numRows, MAX_VISIBLE_ROWS)
-    local frameHeight = math.max(visibleRows * ROW_HEIGHT + 52, 54)
+    local frameHeight = math.max(visibleRows * ROW_HEIGHT + 58, 60)
     self.rollFrame:SetHeight(frameHeight)
 
     for i, entry in ipairs(self.RollEntries) do
         local row = self:GetOrCreateRollRow(i)
+
+        -- Roll type
+        row.typeText:SetText(entry.classification)
+        row.typeText:SetTextColor(0.6, 0.6, 0.6)
 
         -- Player name with class color
         local classColor = entry.class and RAID_CLASS_COLORS and RAID_CLASS_COLORS[entry.class]
@@ -317,7 +352,7 @@ function BR:RefreshRollDisplay()
         row.calcText:SetText(entry.rawRoll .. " * " .. tostring(entry.modifier))
         row.calcText:SetTextColor(0.8, 0.8, 0.8)
 
-        -- Result
+        -- Result (Gargul success green for top roller)
         local resultStr
         if entry.adjustedRoll == math.floor(entry.adjustedRoll) then
             resultStr = tostring(math.floor(entry.adjustedRoll))
@@ -326,9 +361,10 @@ function BR:RefreshRollDisplay()
         end
         row.resultText:SetText(resultStr)
 
-        -- Highlight top roller in green
-        if i == 1 and numRows > 1 then
-            row.resultText:SetTextColor(0, 1, 0)
+            -- Highlight top roller per classification in Gargul success green (0x92FF00)
+        local isTopInGroup = (i == 1) or (self.RollEntries[i - 1] and self.RollEntries[i - 1].priority ~= entry.priority)
+        if isTopInGroup and numRows > 1 then
+            row.resultText:SetTextColor(0.573, 1, 0)
         else
             row.resultText:SetTextColor(1, 1, 1)
         end

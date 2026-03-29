@@ -11,12 +11,14 @@ A [Gargul](https://github.com/papa-sern/Gargul) plugin for World of Warcraft TBC
 ### Example
 
 ```
-| Player       | Roll * Mod   | Result |
-|--------------|--------------|--------|
-| Nerfdruids   | 70 * 1.2     | 84     |
-| Fitzchiv     | 100 * 1      | 100    |
-| Mehndi       | 52 * 0.9     | 46.8   |
+| Player       | Type | Roll * Mod   | Result |
+|--------------|------|--------------|--------|
+| Nerfdruids   | MS   | 70 * 1.2     | 84     |
+| Fitzchiv     | MS   | 100 * 1      | 100    |
+| Mehndi       | OS   | 52 * 0.9     | 46.8   |
 ```
+
+Rolls are sorted by type priority (MS before OS), then by adjusted result within each type. The top roller in each type group is highlighted in green. Each roll is also announced in raid chat with the modifier and adjusted result.
 
 ## Import data format
 

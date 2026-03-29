@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0] - 2026-03-29
+
+### Added
+- Roll type column (MS/OS) in the roll display, ordered as Player | Type | Roll * Mod | Result
+- Sorting by roll type priority (MS before OS), then by adjusted roll within each type
+- Green highlight for top roller per type group
+- Raid/party chat announcement when a roll is intercepted, showing the modifier and adjusted result
+
+### Changed
+- UI restyled to match Gargul's dark dialog theme (BACKDROP_DARK_DIALOG_32_32)
+- Import window now uses Gargul-style backdrop, close button, gold title, and dark text area
+- Roll display uses Gargul-style backdrop and close button positioning
+- Buttons changed from GameMenuButtonTemplate to UIPanelButtonTemplate
+- Top roller highlight updated to Gargul's success green (0x92FF00)
+
 ## [1.0.0] - 2026-03-19
 
 ### Added
